@@ -9,6 +9,7 @@ import {
   Snowflake,
   Droplet,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function ExplorePGs() {
   const [view, setView] = useState("grid");
@@ -154,7 +155,7 @@ export default function ExplorePGs() {
     }
   };
 
-  // 🧠 Filter + Sort logic
+  //  Filter + Sort logic
   const filteredPGs = useMemo(() => {
     let data = [...pgListings];
 
@@ -222,7 +223,7 @@ export default function ExplorePGs() {
           />
         </div>
 
-        {/* 🎚️ Filter Section */}
+        {/* Filter Section */}
         <div className="bg-[#191919] rounded-xl p-6 shadow-lg border border-gray-800">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center">
             {/* Rent */}
@@ -318,7 +319,7 @@ export default function ExplorePGs() {
           </div>
         </div>
 
-        {/* 🏠 PG Listings */}
+        {/* PG Listings */}
         {filteredPGs.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filteredPGs.map((pg) => (
@@ -367,9 +368,9 @@ export default function ExplorePGs() {
                     {pg.distance} km from {pg.college}
                   </p>
 
-                  <button className="w-full px-4 py-2 bg-[#87E64B] text-black rounded-lg hover:transition font-semibold cursor-pointer">
+                  <Link to={`/pg/${pg.id}`} className="w-full px-4 py-2 bg-[#87E64B] text-black rounded-lg hover:transition font-semibold cursor-pointer">
                     View Details
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
