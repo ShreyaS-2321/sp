@@ -32,7 +32,7 @@ export default function Navbar() {
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              to="/signup"
+              to="/login"
               className="px-4 py-2 text-white bg-[#383838] rounded-md hover:border-green-500 transition no-underline"
             >
               Signup
@@ -65,8 +65,8 @@ export default function Navbar() {
             </Link>
             <div className="flex gap-2 px-4 py-2 mt-2">
               <Link
-                to="/signup"
-                className="flex-1 px-3 py-2 text-center bg-[rgba(56, 56, 56, 1)] text-white rounded-md text-sm no-underline"
+                to="/login"
+                className="flex-1 px-3 py-2 text-center bg-black text-white border-2 text-[#87E64B] rounded-md text-sm no-underline"
               >
                 Signup
               </Link>
