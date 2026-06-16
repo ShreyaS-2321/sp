@@ -1,30 +1,38 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Upload } from "lucide-react"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Upload, ArrowRight, ArrowLeft, Check, Plus, Trash2 } from "lucide-react";
+
+/* Brand constants matching UI theme */
+const INK = "#15170F";
+const PAPER = "#F4F1EA";
+const PANEL = "#FBFAF5";
+const GREEN = "#4F7B1E";
+const LINE = "rgba(21,23,15,0.12)";
 
 export default function AddPG() {
-  const [step, setStep] = useState(1)
-  const [submitted, setSubmitted] = useState(false)
+  const [step, setStep] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     pgName: "",
     address: "",
     city: "",
     college: "",
-    rent: "",
     gender: "boys",
-    totalRooms: "",
-    availableRooms: "",
+    sharingOptions: [{ type: "Single", rent: "" }],
     amenities: [],
     ownerName: "",
     phone: "",
     email: "",
-  })
+  });
+
+  const amenitiesList = ["WiFi", "Food", "AC", "Laundry", "Parking", "Attached Bath"];
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleAmenityChange = (amenity) => {
     setFormData((prev) => ({
@@ -32,232 +40,158 @@ export default function AddPG() {
       amenities: prev.amenities.includes(amenity)
         ? prev.amenities.filter((a) => a !== amenity)
         : [...prev.amenities, amenity],
-    }))
-  }
+    }));
+  };
+
+  const addSharingOption = () => {
+    setFormData((prev) => ({
+      ...prev,
+      sharingOptions: [...prev.sharingOptions, { type: "Single", rent: "" }],
+    }));
+  };
+
+  const updateSharingOption = (index, field, value) => {
+    const newOptions = [...formData.sharingOptions];
+    newOptions[index][field] = value;
+    setFormData({ ...formData, sharingOptions: newOptions });
+  };
+
+  const removeSharingOption = (index) => {
+    setFormData({
+      ...formData,
+      sharingOptions: formData.sharingOptions.filter((_, i) => i !== index),
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (step < 5) {
-      setStep(step + 1)
+      setStep(step + 1);
     } else {
-      setSubmitted(true)
+      setSubmitted(true);
     }
-  }
-
-  const amenities = ["WiFi", "Food", "AC", "Laundry", "Parking", "Attached Bath"]
+  };
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center py-12 px-4">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+      <div className="min-h-screen flex items-center justify-center p-6 grain" style={{ background: PAPER, color: INK }}>
+        <div className="text-center max-w-sm">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: GREEN }}>
+            <Check className="w-8 h-8" style={{ color: PAPER }} />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Submission Successful!</h2>
-          <p className="text-gray-400 mb-6">Your PG has been submitted! It'll appear after verification.</p>
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="px-6 py-2 bg-green-500 text-black rounded-lg hover:bg-green-600 transition font-semibold"
-          >
+          <h2 className="ff-display text-3xl mb-3">Submission Successful!</h2>
+          <p className="ff-mono text-sm mb-8" style={{ color: "#6B6A5C" }}>Your PG has been submitted. It will appear live after verification.</p>
+          <Link to="/" className="inline-block px-8 py-3 ff-mono uppercase tracking-[0.15em]" style={{ background: INK, color: PAPER, fontSize: "0.75rem" }}>
             Back to Home
-          </button>
+          </Link>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="w-screen min-h-screen bg-background py-12 px-6 overflow-x-hidden">
-      {/* Remove all max-width wrappers */}
-      <div className="w-full">
+    <div className="min-h-screen py-20 px-6 grain" style={{ background: PAPER, color: INK }}>
+      <style>{`
+        .ff-display { font-family: var(--font-display); }
+        .ff-mono { font-family: var(--font-mono); }
+        .grain { background-image: radial-gradient(${GREEN}14 0.5px, transparent 0.5px); background-size: 18px 18px; }
+      `}</style>
+
+      <div className="max-w-[700px] mx-auto">
         {/* Progress Bar */}
-        <div className="mb-10 px-8">
-          <div className="flex justify-between mb-2">
+        <div className="mb-12">
+          <div className="flex justify-between mb-3">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className={`h-1 flex-1 mx-1 rounded ${i <= step ? "bg-green-500" : "bg-gray-700"}`} />
+              <div key={i} className={`h-1 flex-1 mx-1 ${i <= step ? "opacity-100" : "opacity-20"}`} style={{ background: GREEN }} />
             ))}
           </div>
-          <p className="text-gray-400 text-sm">Step {step} of 5</p>
+          <p className="ff-mono uppercase tracking-[0.2em]" style={{ fontSize: "0.65rem", color: "#6B6A5C" }}>Step {step} of 5</p>
         </div>
 
-        <div className="bg-gray-900 rounded-2xl p-10 shadow-lg mx-8">
-          <form onSubmit={handleSubmit} className="w-full">
-            {/* Step 1: Basic Info */}
-            {step === 1 && (
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-white mb-6">Basic Information</h2>
-                <input
-                  type="text"
-                  name="pgName"
-                  placeholder="PG Name"
-                  value={formData.pgName}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                />
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                />
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="City"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                />
-                <select
-                  name="college"
-                  value={formData.college}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-green-500 focus:outline-none"
-                >
-                  <option value="">Select Nearby College</option>
-                  <option value="Delhi University">Delhi University</option>
-                  <option value="Jamia Millia">Jamia Millia</option>
-                  <option value="IP University">IP University</option>
-                </select>
-              </div>
-            )}
+        <div className="p-8 md:p-12" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
+          <form onSubmit={handleSubmit}>
+            <div className="min-h-[350px]">
+              {step === 1 && (
+                <div className="space-y-6">
+                  <h2 className="ff-display text-4xl mb-8">Basic Information</h2>
+                  <input type="text" name="pgName" placeholder="PG Name" value={formData.pgName} onChange={handleInputChange} className="w-full p-4 outline-none" style={{ background: PAPER, border: `1px solid ${LINE}` }} />
+                  <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleInputChange} className="w-full p-4 outline-none" style={{ background: PAPER, border: `1px solid ${LINE}` }} />
+                  <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleInputChange} className="w-full p-4 outline-none" style={{ background: PAPER, border: `1px solid ${LINE}` }} />
+                </div>
+              )}
 
-            {/* Step 2: Room Details */}
-            {step === 2 && (
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-white mb-6">Room Details</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <input
-                    type="number"
-                    name="rent"
-                    placeholder="Rent per month (₹)"
-                    value={formData.rent}
-                    onChange={handleInputChange}
-                    className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                  />
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleInputChange}
-                    className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-green-500 focus:outline-none"
-                  >
-                    <option value="boys">Boys</option>
-                    <option value="girls">Girls</option>
-                    <option value="coed">Co-ed</option>
+              {step === 2 && (
+                <div className="space-y-6">
+                  <h2 className="ff-display text-4xl mb-6">Room Sharing & Rent</h2>
+                  <select name="gender" value={formData.gender} onChange={handleInputChange} className="w-full p-4 outline-none mb-4" style={{ background: PAPER, border: `1px solid ${LINE}` }}>
+                    <option value="boys">Boys PG</option>
+                    <option value="girls">Girls PG</option>
+                    <option value="coed">Co-ed PG</option>
                   </select>
-                  <input
-                    type="number"
-                    name="totalRooms"
-                    placeholder="Total Rooms"
-                    value={formData.totalRooms}
-                    onChange={handleInputChange}
-                    className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                  />
-                  <input
-                    type="number"
-                    name="availableRooms"
-                    placeholder="Available Rooms"
-                    value={formData.availableRooms}
-                    onChange={handleInputChange}
-                    className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Step 3: Amenities */}
-            {step === 3 && (
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-white mb-6">Amenities</h2>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {amenities.map((amenity) => (
-                    <label key={amenity} className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.amenities.includes(amenity)}
-                        onChange={() => handleAmenityChange(amenity)}
-                        className="w-5 h-5 rounded border-gray-700 text-green-500"
-                      />
-                      <span className="text-gray-300">{amenity}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Step 4: Photos */}
-            {step === 4 && (
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-white mb-6">Upload Photos</h2>
-                <div className="border-2 border-dashed border-gray-700 rounded-lg p-12 text-center w-full">
-                  <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-300 mb-2">Drag and drop images here</p>
-                  <input type="file" multiple className="hidden" />
-                  <button type="button" className="text-green-500 hover:text-green-400 transition">
-                    Or click to browse
+                  <div className="space-y-4">
+                    {formData.sharingOptions.map((option, index) => (
+                      <div key={index} className="flex gap-3 items-center">
+                        <select className="p-4 outline-none w-1/3" style={{ background: PAPER, border: `1px solid ${LINE}` }} value={option.type} onChange={(e) => updateSharingOption(index, 'type', e.target.value)}>
+                          <option>Single</option><option>Double</option><option>Triple</option>
+                        </select>
+                        <input type="number" placeholder="Rent (₹)" className="p-4 outline-none flex-1" style={{ background: PAPER, border: `1px solid ${LINE}` }} value={option.rent} onChange={(e) => updateSharingOption(index, 'rent', e.target.value)} />
+                        <button type="button" onClick={() => removeSharingOption(index)} className="p-4 text-red-400"><Trash2 size={18} /></button>
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" onClick={addSharingOption} className="ff-mono text-xs underline flex items-center gap-2" style={{ color: GREEN }}>
+                    <Plus size={14} /> Add another sharing type
                   </button>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Step 5: Owner Info */}
-            {step === 5 && (
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-white mb-6">Owner Information</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    name="ownerName"
-                    placeholder="Your Name"
-                    value={formData.ownerName}
-                    onChange={handleInputChange}
-                    className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Contact Number"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email (Optional)"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="md:col-span-2 w-full px-5 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                  />
+              {step === 3 && (
+                <div className="space-y-6">
+                  <h2 className="ff-display text-4xl mb-8">Amenities</h2>
+                  <div className="grid grid-cols-2 gap-4">
+                    {amenitiesList.map((a) => (
+                      <label key={a} className="flex items-center gap-3 p-4 cursor-pointer" style={{ border: `1px solid ${formData.amenities.includes(a) ? GREEN : LINE}` }}>
+                        <input type="checkbox" checked={formData.amenities.includes(a)} onChange={() => handleAmenityChange(a)} className="w-4 h-4" style={{ accentColor: GREEN }} />
+                        <span className="ff-mono text-sm">{a}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Navigation Buttons */}
-            <div className="flex gap-4 mt-10">
+              {step === 4 && (
+                <div className="space-y-6">
+                  <h2 className="ff-display text-4xl mb-8">Upload Photos</h2>
+                  <div className="p-12 text-center" style={{ border: `2px dashed ${LINE}` }}>
+                    <Upload className="w-10 h-10 mx-auto mb-4" style={{ color: GREEN }} />
+                    <p className="ff-mono text-sm" style={{ color: "#6B6A5C" }}>Click or drag images here</p>
+                  </div>
+                </div>
+              )}
+
+              {step === 5 && (
+                <div className="space-y-6">
+                  <h2 className="ff-display text-4xl mb-8">Owner Information</h2>
+                  <input type="text" name="ownerName" placeholder="Owner Name" value={formData.ownerName} onChange={handleInputChange} className="w-full p-4 outline-none" style={{ background: PAPER, border: `1px solid ${LINE}` }} />
+                  <input type="tel" name="phone" placeholder="Contact Number" value={formData.phone} onChange={handleInputChange} className="w-full p-4 outline-none" style={{ background: PAPER, border: `1px solid ${LINE}` }} />
+                  <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleInputChange} className="w-full p-4 outline-none" style={{ background: PAPER, border: `1px solid ${LINE}` }} />
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-4 mt-12">
               {step > 1 && (
-                <button
-                  type="button"
-                  onClick={() => setStep(step - 1)}
-                  className="flex-1 px-6 py-3 border border-gray-700 text-white rounded-lg hover:bg-gray-800 transition font-semibold"
-                >
-                  Previous
+                <button type="button" onClick={() => setStep(step - 1)} className="flex items-center gap-2 px-8 py-4 ff-mono uppercase tracking-[0.15em] border" style={{ borderColor: LINE, fontSize: "0.75rem" }}>
+                  <ArrowLeft size={15} /> Prev
                 </button>
               )}
-              <button
-                type="submit"
-                className="flex-1 px-6 py-3 bg-green-500 text-black rounded-lg hover:bg-green-600 transition font-semibold"
-              >
-                {step === 5 ? "List My PG" : "Next"}
+              <button type="submit" className="flex-1 flex items-center justify-center gap-2 px-8 py-4 ff-mono uppercase tracking-[0.15em]" style={{ background: INK, color: PAPER, fontSize: "0.75rem" }}>
+                {step === 5 ? "Submit Listing" : "Next"} <ArrowRight size={15} />
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-  )
+  );
 }
