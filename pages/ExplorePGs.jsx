@@ -1,28 +1,40 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
-  Grid2X2 as MapGrid2x2,
-  Map,
+  Search,
   Wifi,
   UtensilsCrossed,
   Snowflake,
   Droplet,
+  ArrowRight,
+  MapPin,
+  LayoutGrid,
+  Map as MapIcon
 } from "lucide-react";
-import { Link } from "react-router-dom";
+
+/* Brand constants matching Landing Page */
+const INK = "#15170F";
+const PAPER = "#F4F1EA";
+const PANEL = "#FBFAF5";
+const GREEN = "#4F7B1E";
+const LIME = "#C7F04A";
+const LINE = "rgba(21,23,15,0.12)";
 
 export default function ExplorePGs() {
-  const [view, setView] = useState("grid");
+  const [view, setView] = useState("grid"); // 'grid' | 'map'
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("Rent (Low→High)");
   const [filters, setFilters] = useState({
     rentMin: 5000,
-    rentMax: 50000,
+    rentMax: 20000,
     gender: "all",
     distance: 10,
     vacancy: false,
   });
 
+  // Mock data - ready for backend injection
   const pgListings = [
     {
       id: 1,
@@ -42,11 +54,11 @@ export default function ExplorePGs() {
       address: "GT Road, Ushagram",
       rent: 5200,
       college: "BB College",
-      available:5,
+      available: 5,
       gender: "boys",
       status: "vacant",
       distance: 3.4,
-      amenities: ["wifi", "laundry","food"],
+      amenities: ["wifi", "laundry", "food"],
     },
     {
       id: 3,
@@ -70,11 +82,11 @@ export default function ExplorePGs() {
       gender: "boys",
       status: "vacant",
       distance: 1.5,
-      amenities: ["wifi","food"],
+      amenities: ["wifi", "food"],
     },
     {
       id: 5,
-      name: "BrightStay PG ",
+      name: "BrightStay PG",
       address: "Near SBSTC Bus Stand, Asansol",
       rent: 7000,
       college: "Asansol Engineering College",
@@ -94,7 +106,7 @@ export default function ExplorePGs() {
       gender: "girls",
       status: "vacant",
       distance: 3.5,
-      amenities: ["wifi", "food","ac"],
+      amenities: ["wifi", "food", "ac"],
     },
     {
       id: 7,
@@ -108,58 +120,41 @@ export default function ExplorePGs() {
       distance: 1.1,
       amenities: ["wifi", "food"],
     },
-    {
-      id: 8,
-      name: "Maple PG ",
-      address: "Sen Raleigh Road, Asansol",
-      rent: 7500,
-      college: "Asansol Engineering College",
-      available: 0,
-      gender: "coed",
-      status: "full",
-      distance: 3.5,
-      amenities: ["wifi", "food","ac","laundry"],
-    },
   ];
 
   const amenityIcons = {
-    wifi: <Wifi size={16} />,
-    food: <UtensilsCrossed size={16} />,
-    ac: <Snowflake size={16} />,
-    laundry: <Droplet size={16} />,
+    wifi: <Wifi size={14} />,
+    food: <UtensilsCrossed size={14} />,
+    ac: <Snowflake size={14} />,
+    laundry: <Droplet size={14} />,
   };
 
-  const getStatusColor = (status) => {
+  const getStatusStyles = (status) => {
     switch (status) {
       case "vacant":
-        return "bg-green-100 text-green-800";
+        return { color: GREEN, border: `1px solid ${GREEN}` };
       case "full":
-        return "bg-red-100 text-red-800";
+        return { color: "#D94040", border: `1px solid rgba(217,64,64,0.3)` };
       case "few":
-        return "bg-yellow-100 text-yellow-800";
+        return { color: "#B8860B", border: `1px solid rgba(184,134,11,0.3)` };
       default:
-        return "bg-gray-100 text-gray-800";
+        return { color: "#6B6A5C", border: `1px solid ${LINE}` };
     }
   };
 
   const getStatusText = (status) => {
     switch (status) {
-      case "vacant":
-        return "Vacant";
-      case "full":
-        return "Full";
-      case "few":
-        return "Few Left";
-      default:
-        return "Unknown";
+      case "vacant": return "Vacant";
+      case "full": return "Full";
+      case "few": return "Few Left";
+      default: return "Unknown";
     }
   };
 
-  //  Filter + Sort logic
+  // Filter + Sort logic
   const filteredPGs = useMemo(() => {
     let data = [...pgListings];
 
-    // Search
     if (searchTerm.trim() !== "") {
       const term = searchTerm.toLowerCase();
       data = data.filter(
@@ -170,27 +165,22 @@ export default function ExplorePGs() {
       );
     }
 
-    // Rent Range
     data = data.filter(
       (pg) => pg.rent >= filters.rentMin && pg.rent <= filters.rentMax
     );
 
-    // Gender
     if (filters.gender !== "all") {
       data = data.filter((pg) => pg.gender === filters.gender);
     }
 
-    // Distance
     data = data.filter((pg) => pg.distance <= filters.distance);
 
-    // Vacancy
     if (filters.vacancy) {
       data = data.filter(
         (pg) => pg.status === "vacant" || pg.status === "few"
       );
     }
 
-    // Sorting
     switch (sortBy) {
       case "Rent (Low→High)":
         data.sort((a, b) => a.rent - b.rent);
@@ -204,111 +194,130 @@ export default function ExplorePGs() {
       case "Newest":
         data.sort((a, b) => b.id - a.id);
         break;
+      default: break;
     }
 
     return data;
   }, [pgListings, searchTerm, filters, sortBy]);
 
   return (
-    <div className="min-h-screen w-screen bg-[#FFFEF9] py-12 px-4 md:px-10 lg:px-16">
-      <div className="w-full space-y-10">
-        {/* 🔍 Search Bar */}
-        <div className="w-full">
-          <input
-            type="text"
-            placeholder="Search PG by College Name or City..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-6 py-4 bg-[#191919] border border-gray-700 rounded-lg text-white placeholder-white focus:border-green-500 focus:outline-none shadow-sm"
-          />
+    <div className="min-h-screen antialiased pt-28 pb-24 overflow-x-hidden" style={{ background: PAPER, color: INK }}>
+      <style>{`
+        ::selection { background: ${GREEN}; color: ${PAPER}; }
+        .ff-display { font-family: var(--font-display); font-optical-sizing: auto; }
+        .ff-mono { font-family: var(--font-mono); }
+        .grain {
+          background-image: radial-gradient(${GREEN}14 0.5px, transparent 0.5px);
+          background-size: 18px 18px;
+        }
+      `}</style>
+
+      <div className="max-w-[1280px] mx-auto px-4 md:px-10">
+        
+        {/* ====================== HEADER & SEARCH ====================== */}
+        <div className="mb-8">
+          <h1 className="ff-display" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 1, letterSpacing: "-0.03em", fontWeight: 500 }}>
+            Explore <span className="italic text-[#9A9684]" style={{ fontWeight: 400 }}>PGs</span>
+          </h1>
+          
+          <div
+            className="mt-6 flex items-center gap-3 w-full p-2"
+            style={{ background: PANEL, border: `1px solid ${LINE}` }}
+          >
+            <div className="flex-1 flex items-center gap-3 px-4">
+              <Search size={18} style={{ color: GREEN }} className="shrink-0" />
+              <input
+                type="text"
+                placeholder="Search PG by college, name or city..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-transparent outline-none py-3 text-sm md:text-base"
+                style={{ color: INK }}
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Filter Section */}
-        <div className="bg-[#191919] rounded-xl p-6 shadow-lg border border-gray-800">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center">
-            {/* Rent */}
-            <div className="min-w-0">
-              <label className="block text-white text-sm font-medium mb-2">
-                Rent: ₹{filters.rentMin / 1000}k - ₹{filters.rentMax / 1000}k
+        {/* ====================== HORIZONTAL FILTERS ====================== */}
+        <div className="mb-10 p-5 md:p-6" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="ff-mono uppercase tracking-[0.18em]" style={{ fontSize: "0.8rem", color: INK }}>Filters</h2>
+            
+            {/* Vacancy Toggle (Desktop: right side of header, Mobile: integrated below) */}
+            <label className="hidden md:flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.vacancy}
+                onChange={(e) => setFilters({ ...filters, vacancy: e.target.checked })}
+                className="w-4 h-4"
+                style={{ accentColor: GREEN }}
+              />
+              <span className="ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.7rem", color: INK }}>
+                Show only available
+              </span>
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-end">
+            {/* Rent Filter */}
+            <div className="w-full">
+              <label className="flex justify-between items-center ff-mono tracking-[0.05em] mb-3" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>
+                <span>Max Rent</span>
+                <span style={{ color: INK }}>₹{filters.rentMax}</span>
               </label>
               <input
                 type="range"
                 min="5000"
-                max="50000"
-                step="1000"
+                max="20000"
+                step="500"
                 value={filters.rentMax}
-                onChange={(e) =>
-                  setFilters({ ...filters, rentMax: parseInt(e.target.value) })
-                }
-                className="w-full accent-[#87E64B]"
+                onChange={(e) => setFilters({ ...filters, rentMax: parseInt(e.target.value) })}
+                className="w-full"
+                style={{ accentColor: GREEN }}
               />
             </div>
 
-            {/* Gender */}
-            <div className="min-w-0">
-              <label className="block text-white text-sm font-medium mb-2">
-                Gender
-              </label>
-              <select
-                value={filters.gender}
-                onChange={(e) =>
-                  setFilters({ ...filters, gender: e.target.value })
-                }
-                className="w-full px-3 py-2 bg-[#383838] rounded-lg text-white focus:border-green-500 focus:outline-none transition-all duration-200"
-              >
-                <option value="all">All</option>
-                <option value="boys">Boys</option>
-                <option value="girls">Girls</option>
-                <option value="coed">Co-ed</option>
-              </select>
-            </div>
-
-            {/* Distance */}
-            <div className="min-w-0">
-              <label className="block text-white text-sm font-medium mb-2">
-                Distance: {filters.distance} km
+            {/* Distance Filter */}
+            <div className="w-full">
+              <label className="flex justify-between items-center ff-mono tracking-[0.05em] mb-3" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>
+                <span>Distance</span>
+                <span style={{ color: INK }}>Up to {filters.distance} km</span>
               </label>
               <input
                 type="range"
                 min="1"
-                max="10"
+                max="15"
                 value={filters.distance}
-                onChange={(e) =>
-                  setFilters({ ...filters, distance: parseInt(e.target.value) })
-                }
-                className="w-full accent-[#87E64B]"
+                onChange={(e) => setFilters({ ...filters, distance: parseInt(e.target.value) })}
+                className="w-full"
+                style={{ accentColor: GREEN }}
               />
             </div>
 
-            {/* Vacancy */}
-            <div className="flex flex-col justify-center min-w-0">
-              <label className="text-white text-sm font-medium mb-2">
-                Vacancy
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={filters.vacancy}
-                  onChange={(e) =>
-                    setFilters({ ...filters, vacancy: e.target.checked })
-                  }
-                  className="w-4 h-4 accent-green-500"
-                />
-                <span className="text-gray-300 text-sm">
-                  Show only vacant/few
-                </span>
-              </label>
+            {/* Gender Filter */}
+            <div className="w-full">
+              <label className="block ff-mono tracking-[0.05em] mb-3" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>Gender</label>
+              <select
+                value={filters.gender}
+                onChange={(e) => setFilters({ ...filters, gender: e.target.value })}
+                className="w-full px-4 py-2.5 outline-none appearance-none"
+                style={{ background: PAPER, border: `1px solid ${LINE}`, color: INK, fontSize: "0.9rem" }}
+              >
+                <option value="all">Any Gender</option>
+                <option value="boys">Boys Only</option>
+                <option value="girls">Girls Only</option>
+                <option value="coed">Co-ed</option>
+              </select>
             </div>
 
             {/* Sort By */}
-            <div className="min-w-0">
-              <label className="block text-white text-sm font-medium mb-2">
-                Sort By
-              </label>
+            <div className="w-full">
+              <label className="block ff-mono tracking-[0.05em] mb-3" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>Sort By</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-3 py-2 bg-[#383838] rounded-lg text-white focus:border-green-500 focus:outline-none"
+                className="w-full px-4 py-2.5 outline-none appearance-none"
+                style={{ background: PAPER, border: `1px solid ${LINE}`, color: INK, fontSize: "0.9rem" }}
               >
                 <option>Rent (Low→High)</option>
                 <option>Rent (High→Low)</option>
@@ -316,74 +325,158 @@ export default function ExplorePGs() {
                 <option>Newest</option>
               </select>
             </div>
+
+            {/* Vacancy Toggle (Mobile Only) */}
+            <div className="md:hidden pt-2 w-full">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={filters.vacancy}
+                  onChange={(e) => setFilters({ ...filters, vacancy: e.target.checked })}
+                  className="w-4 h-4"
+                  style={{ accentColor: GREEN }}
+                />
+                <span className="ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.7rem", color: INK }}>
+                  Show only available
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 
-        {/* PG Listings */}
-        {filteredPGs.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        {/* ====================== LISTINGS AREA ====================== */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className="ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.7rem", color: "#6B6A5C" }}>
+            Showing {filteredPGs.length} stays
+          </div>
+
+          {/* Grid / Map Toggle */}
+          <div className="flex items-center p-1" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
+            <button
+              onClick={() => setView("grid")}
+              className="flex items-center gap-2 px-4 py-2 ff-mono uppercase tracking-[0.1em] transition-colors"
+              style={{
+                fontSize: "0.65rem",
+                background: view === "grid" ? INK : "transparent",
+                color: view === "grid" ? PAPER : "#6B6A5C",
+              }}
+            >
+              <LayoutGrid size={14} />
+              Grid
+            </button>
+            <button
+              onClick={() => setView("map")}
+              className="flex items-center gap-2 px-4 py-2 ff-mono uppercase tracking-[0.1em] transition-colors"
+              style={{
+                fontSize: "0.65rem",
+                background: view === "map" ? INK : "transparent",
+                color: view === "map" ? PAPER : "#6B6A5C",
+              }}
+            >
+              <MapIcon size={14} />
+              Map
+            </button>
+          </div>
+        </div>
+
+        {/* Content View */}
+        {filteredPGs.length === 0 ? (
+          <div className="w-full py-24 flex flex-col items-center justify-center text-center border-dashed" style={{ border: `1px dashed ${LINE}`, background: PANEL }}>
+            <span className="ff-display italic" style={{ fontSize: "2rem", color: "#9A9684" }}>No matches found</span>
+            <p className="mt-2 ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>
+              Try adjusting your filters to see more results.
+            </p>
+          </div>
+        ) : view === "grid" ? (
+          /* Grid View */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredPGs.map((pg) => (
               <div
                 key={pg.id}
-                className="bg-[#191919] rounded-xl overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1 transition-transform duration-200 border border-gray-800"
+                className="group flex flex-col transition-colors"
+                style={{ background: PANEL, border: `1px solid ${LINE}` }}
               >
-                <img
-                  src={`/pg-room-${pg.id}.jpg`}
-                  alt={pg.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">
+                {/* Card Image Placeholder */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#EAE8DF]" style={{ borderBottom: `1px solid ${LINE}` }}>
+                  <img
+                    src={`/pg-room-${pg.id}.jpg`}
+                    alt={pg.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => { e.target.style.display = 'none' }} // Fallback if no image
+                  />
+                  {/* Top Badges */}
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.6rem", color: INK }}>
+                      {pg.gender}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="min-w-0">
+                      <h3 className="ff-display truncate" style={{ fontSize: "1.4rem", fontWeight: 500, letterSpacing: "-0.01em" }}>
                         {pg.name}
                       </h3>
-                      <p className="text-sm text-gray-400">{pg.address}</p>
+                      <div className="mt-1.5 flex items-center gap-1" style={{ color: "#6B6A5C", fontSize: "0.85rem" }}>
+                        <MapPin size={12} className="shrink-0" />
+                        <span className="truncate">{pg.address}</span>
+                      </div>
                     </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                        pg.status
-                      )}`}
+                    <span 
+                      className="px-2 py-1 ff-mono uppercase tracking-[0.1em] whitespace-nowrap shrink-0" 
+                      style={{ fontSize: "0.6rem", ...getStatusStyles(pg.status) }}
                     >
                       {getStatusText(pg.status)}
                     </span>
                   </div>
 
-                  <p className="text-xl font-bold text-[#87E64B] mb-3">
-                    ₹{pg.rent}/month
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {pg.amenities.map((amenity) => (
-                      <div
-                        key={amenity}
-                        className="p-1 bg-gray-800 rounded text-gray-300"
-                      >
-                        {amenityIcons[amenity]}
-                      </div>
-                    ))}
+                  <div className="mt-4 pb-4" style={{ borderBottom: `1px solid ${LINE}` }}>
+                    <div className="flex items-end gap-1">
+                      <span className="ff-display" style={{ fontSize: "1.8rem", fontWeight: 500, lineHeight: 1 }}>₹{pg.rent}</span>
+                      <span className="mb-1" style={{ fontSize: "0.85rem", color: "#6B6A5C" }}>/mo</span>
+                    </div>
                   </div>
 
-                  <p className="text-sm text-gray-400 mb-4">
-                    {pg.distance} km from {pg.college}
-                  </p>
+                  <div className="mt-4 flex flex-col gap-2 flex-1">
+                    <div className="flex items-center gap-2" style={{ color: "#54533F", fontSize: "0.85rem" }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: LINE }} />
+                      {pg.distance} km from {pg.college}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {pg.amenities.map((amenity) => (
+                        <span 
+                          key={amenity} 
+                          className="flex items-center justify-center p-2 rounded-sm"
+                          style={{ border: `1px solid ${LINE}`, color: "#6B6A5C", background: PAPER }}
+                          title={amenity}
+                        >
+                          {amenityIcons[amenity]}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-                  <Link to={`/pg/${pg.id}`} className="w-full px-4 py-2 bg-[#87E64B] text-black rounded-lg hover:transition font-semibold cursor-pointer">
+                  <Link
+                    to={`/pg/${pg.id}`}
+                    className="mt-6 w-full flex items-center justify-between px-5 py-3.5 ff-mono uppercase tracking-[0.15em] transition-colors hover:opacity-90"
+                    style={{ fontSize: "0.74rem", background: INK, color: PAPER }}
+                  >
                     View Details
+                    <ArrowRight size={15} />
                   </Link>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center mt-16">
-            <img
-              src="/empty-state-no-results.jpg"
-              alt="No results"
-              className="w-48 h-48 mx-auto mb-4 opacity-50"
-            />
-            <p className="text-gray-400 text-lg">
-              Oops! No PGs found in this budget. Try adjusting filters.
+          /* Map View Placeholder */
+          <div className="w-full h-[600px] flex flex-col items-center justify-center grain relative" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
+            <MapIcon size={48} style={{ color: GREEN, opacity: 0.5 }} className="mb-4" />
+            <span className="ff-display italic" style={{ fontSize: "1.8rem", color: INK }}>Map Integration Pending</span>
+            <p className="mt-2 ff-mono uppercase tracking-[0.1em] text-center max-w-sm px-4" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>
+              Backend map data (e.g., Google Maps or Mapbox) will render here.
             </p>
           </div>
         )}
