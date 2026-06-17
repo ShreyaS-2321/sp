@@ -129,16 +129,17 @@ export default function ExplorePGs() {
     laundry: <Droplet size={14} />,
   };
 
+  // UPDATED: Now uses solid background colors instead of outlines
   const getStatusStyles = (status) => {
     switch (status) {
       case "vacant":
-        return { color: GREEN, border: `1px solid ${GREEN}` };
+        return { background: GREEN, color: PAPER };
       case "full":
-        return { color: "#D94040", border: `1px solid rgba(217,64,64,0.3)` };
+        return { background: "#D94040", color: PAPER };
       case "few":
-        return { color: "#B8860B", border: `1px solid rgba(184,134,11,0.3)` };
+        return { background: "#D08A00", color: PAPER }; // Solid orange/gold
       default:
-        return { color: "#6B6A5C", border: `1px solid ${LINE}` };
+        return { background: "#EAE8DF", color: "#6B6A5C" };
     }
   };
 
@@ -382,7 +383,8 @@ export default function ExplorePGs() {
         {/* Content View */}
         {filteredPGs.length === 0 ? (
           <div className="w-full py-24 flex flex-col items-center justify-center text-center border-dashed" style={{ border: `1px dashed ${LINE}`, background: PANEL }}>
-            <span className="ff-display italic" style={{ fontSize: "2rem", color: "#9A9684" }}>No matches found</span>
+            <img src="/p3.svg" alt="No matches found" height="100" width="100" />
+            <span className="ff-display" style={{ fontSize: "2rem", color: "#9A9684" }}>No matches found</span>
             <p className="mt-2 ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>
               Try adjusting your filters to see more results.
             </p>
@@ -424,8 +426,9 @@ export default function ExplorePGs() {
                         <span className="truncate">{pg.address}</span>
                       </div>
                     </div>
+                    {/* UPDATED: Solid Badge */}
                     <span 
-                      className="px-2 py-1 ff-mono uppercase tracking-[0.1em] whitespace-nowrap shrink-0" 
+                      className="px-2.5 py-1.5 ff-mono uppercase tracking-[0.1em] whitespace-nowrap shrink-0" 
                       style={{ fontSize: "0.6rem", ...getStatusStyles(pg.status) }}
                     >
                       {getStatusText(pg.status)}
@@ -474,9 +477,8 @@ export default function ExplorePGs() {
           /* Map View Placeholder */
           <div className="w-full h-[600px] flex flex-col items-center justify-center grain relative" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
             <MapIcon size={48} style={{ color: GREEN, opacity: 0.5 }} className="mb-4" />
-            <span className="ff-display italic" style={{ fontSize: "1.8rem", color: INK }}>Map Integration Pending</span>
             <p className="mt-2 ff-mono uppercase tracking-[0.1em] text-center max-w-sm px-4" style={{ fontSize: "0.75rem", color: "#6B6A5C" }}>
-              Backend map data (e.g., Google Maps or Mapbox) will render here.
+              Google Map integration
             </p>
           </div>
         )}
