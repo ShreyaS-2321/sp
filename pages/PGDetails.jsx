@@ -52,8 +52,8 @@ export default function PGDetails() {
         
         {/* Main Content (Left Column) */}
         <div className="lg:col-span-8 space-y-10">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 ff-mono uppercase tracking-[0.1em] text-[0.7rem] hover:opacity-70 transition-opacity">
-            <ArrowLeft size={14} /> Back to listings
+          <button onClick={() => navigate(-1)} className="flex items-center gap-2 ff-mono uppercase tracking-[0.1em] text-[0.7rem] hover:opacity-70 transition-opacity cursor-pointer">
+            <ArrowLeft size={16} /> Back to listings
           </button>
             
           {/* Hero Gallery */}
