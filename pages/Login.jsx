@@ -63,21 +63,7 @@ export default function Login() {
             to="/"
             className="inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity"
           >
-            <span
-              className="ff-display italic"
-              style={{
-                fontSize: "1.6rem",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              StayPoint
-            </span>
-
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ background: GREEN }}
-            />
+            <img src="/logo sp.svg" alt="StayPoint" className="h-8 w-auto object-contain" />
           </Link>
 
           <h1
