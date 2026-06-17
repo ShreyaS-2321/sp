@@ -7,22 +7,20 @@ import PGDetails from "../pages/PGDetails";
 import Signup from "../pages/signup";
 import Login from "../pages/Login";
 import OwnerDashboard from "../pages/OwnerDashboard";
+import ScrollToTop from "../pages/ScrollToTop";
 import "./index.css";
 
 function App() {
   const location = useLocation();
-
-  // Define paths where the Navbar should NOT appear
-  const hideNavbarPaths = ["/signup", "/login","/add-pg","/owner-dashboard"]; // Add more paths as needed
-
-  // Check if current path matches any in the list
-  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
+  const hideNavbarExactPaths = ["/signup", "/login", "/add-pg", "/owner-dashboard"];
+  const shouldShowNavbar = 
+    !hideNavbarExactPaths.includes(location.pathname) && 
+    !location.pathname.startsWith("/pg/");
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {/* Conditionally render the Navbar */}
+      <ScrollToTop />
       {shouldShowNavbar && <Navbar />}
-      
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Landing />} />
@@ -36,7 +34,8 @@ function App() {
             path="*"
             element={
               <div className="text-center text-black mt-20 text-xl">
-                Page not found 😿
+                Page not found
+                <img src="/p3.svg" alt="Page not found" />
               </div>
             }
           />
