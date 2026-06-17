@@ -4,7 +4,7 @@ import Landing from "../pages/Landing";
 import ExplorePGs from "../pages/ExplorePGs";
 import AddPG from "../pages/AddPG";
 import PGDetails from "../pages/PGDetails";
-import Signup from "../pages/signup";
+import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import OwnerDashboard from "../pages/OwnerDashboard";
 import ScrollToTop from "../pages/ScrollToTop";
