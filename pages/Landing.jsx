@@ -104,7 +104,7 @@ export default function LandingPage() {
       title: "Every stay, physically verified",
       desc: "Our team visits each PG before it goes live. Real photos, owner KYC, on-site checks — zero scams, full transparency.",
       icon: ShieldCheck,
-      tags: ["Real photos", "Owner KYC", "On-site checks"],
+      tags: ["Real photos","On-site checks"],
     },
     {
       n: "02",
@@ -156,7 +156,7 @@ export default function LandingPage() {
             {/* Left — editorial headline */}
             <div className="lg:col-span-7">
               <Reveal>
-                <Eyebrow index="◆">Verified student housing · Asansol & Durgapur</Eyebrow>
+                <Eyebrow index="◆">Verified student housing</Eyebrow>
               </Reveal>
               <Reveal delay={0.05}>
                 <h1
@@ -175,7 +175,7 @@ export default function LandingPage() {
     </svg>
   </span>
   
-  {/* Add the small penguin right here */}
+  {/* penguin mascot */}
   <img 
     src="m2.svg" 
     alt="Small Pingu mascot" 
@@ -221,9 +221,9 @@ export default function LandingPage() {
                 <div className="mt-7 flex items-center gap-6 ff-mono uppercase tracking-[0.18em]" style={{ fontSize: "0.68rem", color: "#6B6A5C" }}>
                   <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: GREEN }} />
-                    500+ live listings
+                    50+ live listings
                   </span>
-                  <span>2,000+ students housed</span>
+                  <span>100+ students housed</span>
                 </div>
               </Reveal>
             </div>
@@ -235,7 +235,7 @@ export default function LandingPage() {
                 style={{ background: PANEL, border: `1px solid ${LINE}` }}
               >
                 <span className="ff-display italic" style={{ fontSize: "1.15rem" }}>
-                  Hi, I'm Pingu! 👋 I'll help you find the perfect PG.
+                  Hi, I'm Pingo! 👋 I'll help you find the perfect PG.
                 </span>
               </div>
               <div className="relative">
@@ -271,8 +271,8 @@ export default function LandingPage() {
       <section style={{ borderBottom: `1px solid ${LINE}` }}>
         <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-16 grid grid-cols-2 md:grid-cols-4">
           {[
-            { value: 500, suffix: "+", label: "Verified PGs" },
-            { value: 2000, suffix: "+", label: "Students housed" },
+            { value: 50, suffix: "+", label: "Verified PGs" },
+            { value: 100, suffix: "+", label: "Students housed" },
             { value: 0, suffix: " ₹", label: "Brokerage" },
             { value: 24, suffix: "/7", label: "Support" },
           ].map((s, i) => (
@@ -476,8 +476,7 @@ export default function LandingPage() {
         <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-16 grid md:grid-cols-12 gap-10">
           <div className="md:col-span-5">
             <div className="flex items-center gap-2.5">
-              <span className="ff-display italic" style={{ fontSize: "1.6rem", fontWeight: 600, letterSpacing: "-0.02em" }}>StayPoint</span>
-              <span className="w-2 h-2 rounded-full" style={{ background: GREEN }} />
+              <img src="/logo sp.svg" alt="StayPoint" className="h-8 w-auto object-contain" />
             </div>
             <p className="mt-4 max-w-xs leading-relaxed" style={{ color: "#6B6A5C" }}>
               Verified PGs with real-time availability and zero brokerage — built for students, by students.
@@ -503,7 +502,7 @@ export default function LandingPage() {
         <div style={{ borderTop: `1px solid ${LINE}` }}>
           <div className="max-w-[1280px] mx-auto px-6 md:px-10 py-6 flex flex-col md:flex-row items-center justify-between gap-3 ff-mono uppercase tracking-[0.12em]" style={{ fontSize: "0.66rem", color: "#9A9684" }}>
             <span>© {new Date().getFullYear()} StayPoint</span>
-            <span>Made for students in Bengal</span>
+            <span>Made for students by students</span>
           </div>
         </div>
       </footer>
