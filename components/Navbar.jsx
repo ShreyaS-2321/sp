@@ -36,13 +36,7 @@ export default function Navbar() {
     >
       <div className="max-w-[1280px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5">
-          <span
-            className="ff-display italic"
-            style={{ fontSize: "1.6rem", fontWeight: 600, letterSpacing: "-0.02em" }}
-          >
-            StayPoint
-          </span>
-          <span className="w-2 h-2 rounded-full" style={{ background: GREEN }} />
+          <img src="/logo sp.svg" alt="StayPoint" className="h-36 w-36" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 ff-mono uppercase tracking-[0.15em]" style={{ fontSize: "0.72rem" }}>
