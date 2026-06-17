@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Mail, Lock, User, ArrowRight } from "lucide-react"
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react"
 
 /* Brand constants matching Landing Page */
 const INK = "#15170F"
@@ -16,6 +16,7 @@ export default function Signup() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false) // Added state for password visibility
   const [error, setError] = useState("")
 
   const handleSubmit = (e) => {
@@ -63,21 +64,7 @@ export default function Signup() {
             to="/"
             className="inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity"
           >
-            <span
-              className="ff-display italic"
-              style={{
-                fontSize: "1.6rem",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              StayPoint
-            </span>
-
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ background: GREEN }}
-            />
+            <img src="/logo sp.svg" alt="StayPoint" className="h-8 w-auto object-contain" />
           </Link>
 
           <h1
@@ -240,15 +227,25 @@ export default function Signup() {
                   border: `1px solid ${LINE}`,
                 }}
               >
-                <Lock size={16} style={{ color: GREEN }} />
+                <Lock size={16} style={{ color: GREEN }} className="shrink-0" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-transparent outline-none ml-3 text-sm"
                   style={{ color: INK }}
                 />
+                {/* Toggle Password Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="ml-2 focus:outline-none hover:opacity-70 transition-opacity"
+                  style={{ color: "#6B6A5C" }}
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
             </div>
 
