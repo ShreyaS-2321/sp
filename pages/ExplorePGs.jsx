@@ -350,34 +350,6 @@ export default function ExplorePGs() {
           <div className="ff-mono uppercase tracking-[0.1em]" style={{ fontSize: "0.7rem", color: "#6B6A5C" }}>
             Showing {filteredPGs.length} stays
           </div>
-
-          {/* Grid / Map Toggle */}
-          <div className="flex items-center p-1" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
-            <button
-              onClick={() => setView("grid")}
-              className="flex items-center gap-2 px-4 py-2 ff-mono uppercase tracking-[0.1em] transition-colors"
-              style={{
-                fontSize: "0.65rem",
-                background: view === "grid" ? INK : "transparent",
-                color: view === "grid" ? PAPER : "#6B6A5C",
-              }}
-            >
-              <LayoutGrid size={14} />
-              Grid
-            </button>
-            <button
-              onClick={() => setView("map")}
-              className="flex items-center gap-2 px-4 py-2 ff-mono uppercase tracking-[0.1em] transition-colors"
-              style={{
-                fontSize: "0.65rem",
-                background: view === "map" ? INK : "transparent",
-                color: view === "map" ? PAPER : "#6B6A5C",
-              }}
-            >
-              <MapIcon size={14} />
-              Map
-            </button>
-          </div>
         </div>
 
         {/* Content View */}
