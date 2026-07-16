@@ -102,7 +102,7 @@ export default function LandingPage() {
     {
       n: "01",
       title: "Every stay, physically verified",
-      desc: "Our team visits each PG before it goes live. Real photos, owner KYC, on-site checks — zero scams, full transparency.",
+      desc: "Our team visits each PG before it goes live. Real photos, on-site checks — zero scams, full transparency.",
       icon: ShieldCheck,
       tags: ["Real photos","On-site checks"],
     },
