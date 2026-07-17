@@ -1,6 +1,5 @@
-// src/data/pgdata.js
-
 export const pgListings = [
+  // ================= ASANSOL =================
   {
     id: 1,
     name: "Adhya PG",
@@ -10,54 +9,17 @@ export const pgListings = [
     rating: 4.4,
     reviews: 18,
     ownerName: "Rajesh Kumar",
-    ownerPhone: "9876543210",
-    ownerEmail: "rajesh@adhya.com",
+    ownerPhone: "9876500001",
     latitude: 23.6739,
     longitude: 86.9524,
-    gender: "girls", // 'boys' | 'girls' | 'coed'
+    gender: "girls", 
     distance: 2.5,
-    status: "vacant", // 'vacant' | 'few' | 'full'
-    images: [
-      "/pg-room-1.jpg",
-      "/pg-room-2.jpg",
-      "/pg-room-3.jpg",
-    ],
-    amenities: [
-      "WiFi",
-      "Food",
-      "AC",
-      "Laundry",
-      "Parking",
-      "Attached Bath",
-    ],
-    // Dynamic pricing structure
+    status: "vacant",
+    images: ["/pg-room-1.jpg"],
+    amenities: ["WiFi", "Food", "AC"],
     sharingOptions: [
-      { type: "Single", rent: 8000 },
-      { type: "Double", rent: 6000 },
-      { type: "Triple", rent: 4500 },
-    ],
-    // Tenant management for Owner Dashboard
-    tenants: [
-      { 
-        id: 101, 
-        name: "Rahul K.", 
-        college: "Asansol Engineering College", 
-        phone: "9876543210", 
-        roomType: "Single", 
-        rentPaid: true 
-      },
-      { 
-        id: 102, 
-        name: "Priya S.", 
-        college: "NIT Durgapur", 
-        phone: "9123456789", 
-        roomType: "Double", 
-        rentPaid: false 
-      }
-    ],
-    reviewsList: [
-      { user: "Rahul K.", rating: 5, text: "Great place, very safe!", date: "June 2026" },
-      { user: "Amit P.", rating: 4, text: "Good food, nice location.", date: "May 2026" }
+      { type: "Single", rent: 8000, bedsAvailable: 1 },
+      { type: "Double", rent: 6000, bedsAvailable: 2 },
     ]
   },
   {
@@ -69,27 +31,305 @@ export const pgListings = [
     rating: 4.0,
     reviews: 12,
     ownerName: "Suresh Das",
-    ownerPhone: "9933001122",
-    ownerEmail: "suresh@loksantosh.com",
+    ownerPhone: "9876500002",
     latitude: 23.6800,
     longitude: 86.9600,
     gender: "boys",
-    distance: 3.4,
+    distance: 1.4,
     status: "vacant",
-    images: [
-      "/pg-room-2.jpg",
-      "/pg-room-1.jpg",
-    ],
+    images: ["/pg-room-2.jpg"],
     amenities: ["WiFi", "Laundry", "Food"],
     sharingOptions: [
-      { type: "Double", rent: 5000 },
-      { type: "Triple", rent: 3500 },
-    ],
-    tenants: [
-      { id: 201, name: "Imran H.", college: "AEC", phone: "8899776655", roomType: "Triple", rentPaid: true }
-    ],
-    reviewsList: [
-      { user: "Imran H.", rating: 4, text: "Affordable and close to the market.", date: "June 2026" }
+      { type: "Double", rent: 5200, bedsAvailable: 5 },
+      { type: "Triple", rent: 3500, bedsAvailable: 3 },
     ]
-  }
+  },
+  {
+    id: 3,
+    name: "Malobika Girls PG",
+    address: "B B College Road, Ushagram, Asansol",
+    description: "Strictly managed girls accommodation near BB College with CC TV security.",
+    college: "BB College",
+    rating: 4.6,
+    reviews: 45,
+    ownerName: "Malobika Sen",
+    ownerPhone: "9876500003",
+    latitude: 23.6821,
+    longitude: 86.9654,
+    gender: "girls",
+    distance: 0.9,
+    status: "few",
+    images: ["/pg-room-3.jpg"],
+    amenities: ["WiFi", "Food", "AC", "Security"],
+    sharingOptions: [
+      { type: "Double", rent: 7000, bedsAvailable: 1 },
+    ]
+  },
+  {
+    id: 4,
+    name: "Arun PG",
+    address: "Gobindapur Road, Near AEC Gate, Asansol",
+    description: "Walking distance to AEC campus. High speed internet for engineering students.",
+    college: "Asansol Engineering College",
+    rating: 3.9,
+    reviews: 22,
+    ownerName: "Arun Majumdar",
+    ownerPhone: "9876500004",
+    latitude: 23.6750,
+    longitude: 86.9500,
+    gender: "boys",
+    distance: 0.5,
+    status: "vacant",
+    images: ["/pg-room-4.jpg"],
+    amenities: ["WiFi", "Food"],
+    sharingOptions: [
+      { type: "Double", rent: 6500, bedsAvailable: 5 },
+      { type: "Triple", rent: 4500, bedsAvailable: 2 },
+    ]
+  },
+  {
+    id: 5,
+    name: "BrightStay Co-Living",
+    address: "Near SBSTC Bus Stand, Asansol",
+    description: "Modern co-living space with great transit connectivity.",
+    college: "Kazi Nazrul University",
+    rating: 4.5,
+    reviews: 30,
+    ownerName: "Prakash Verma",
+    ownerPhone: "9876500005",
+    latitude: 23.6850,
+    longitude: 86.9700,
+    gender: "coed",
+    distance: 3.2,
+    status: "few",
+    images: ["/pg-room-5.jpg"],
+    amenities: ["WiFi", "Food", "AC", "Laundry"],
+    sharingOptions: [
+      { type: "Single", rent: 9000, bedsAvailable: 0 },
+      { type: "Double", rent: 7000, bedsAvailable: 2 },
+    ]
+  },
+  {
+    id: 6,
+    name: "Sunrise Girls Residency",
+    address: "Hutton Road, Asansol",
+    description: "Premium property located in the heart of Asansol with easy market access.",
+    college: "BB College",
+    rating: 4.8,
+    reviews: 55,
+    ownerName: "Sunita Devi",
+    ownerPhone: "9876500006",
+    latitude: 23.6812,
+    longitude: 86.9801,
+    gender: "girls",
+    distance: 2.1,
+    status: "vacant",
+    images: ["/pg-room-6.jpg"],
+    amenities: ["WiFi", "Food", "AC", "Attached Bath"],
+    sharingOptions: [
+      { type: "Single", rent: 8500, bedsAvailable: 2 },
+      { type: "Double", rent: 6500, bedsAvailable: 4 },
+    ]
+  },
+  {
+    id: 7,
+    name: "Tulip PG",
+    address: "Central Park, Kalajharia Rd, Asansol",
+    description: "Quiet residential area ideal for focused studying.",
+    college: "Asansol Engineering College",
+    rating: 4.1,
+    reviews: 14,
+    ownerName: "Samrat Bannerjee",
+    ownerPhone: "9851610390",
+    latitude: 23.6900,
+    longitude: 86.9400,
+    gender: "girls",
+    distance: 4.1,
+    status: "few",
+    images: ["/pg-room-r1.jpg","/pg-room-r11.webp"],
+    amenities: ["WiFi", "Food","Bathroom Attached"],
+    sharingOptions: [
+      { type: "Double", rent: 5500, bedsAvailable: 0 },
+    ]
+  },
+  {
+    id: 8,
+    name: "Thakuria Boys PG",
+    address: "Mohishila Colony, Asansol",
+    description: "Spacious rooms with a massive rooftop and regular cleaning.",
+    college: "Asansol Engineering College",
+    rating: 4.2,
+    reviews: 28,
+    ownerName: "Souvik Paul ",
+    ownerPhone: "7001169075",
+    gender: "boys",
+    distance: 11.8,
+    status: "vacant",
+    images: ["/pg-room-r2.jpg","/pg-room-r21.webp"],
+    amenities: ["WiFi", "Food", "Laundry"],
+    sharingOptions: [
+      { type: "Double", rent: 5800, bedsAvailable: 3 },
+      { type: "Triple", rent: 4200, bedsAvailable: 6 },
+    ]
+  },
+  {
+    id: 9,
+    name: "Nilkantha PG",
+    address: "Kanyapur, Asansol",
+    description: "Located near Asansol Engineering College. Vibrant student community.",
+    college: "Asansol Engineering College",
+    rating: 4.7,
+    reviews: 40,
+    ownerName: "Samiran Das",
+    ownerPhone: "8617826220",
+    gender: "boys",
+    distance: 0.8,
+    status: "few",
+    images: ["/pg-room-r3.jpg","/pg-room-r31.jpg"],
+    amenities: ["WiFi", "Food","Attached Bath"],
+    sharingOptions: [
+      { type: "Double", rent: 6200, bedsAvailable: 1 },
+    ]
+  },
+  {
+    id: 10,
+    name: "Bhabatosh PG",
+    address: "Gobindpur, Asansol",
+    description: "Comfortable and affordable PG near Asansol Engineering College.",
+    college: "Asansol Engineering College",
+    rating: 4.3,
+    reviews: 20,
+    ownerName: "Arun Pal",
+    ownerPhone: "9475812717",
+    gender: "girls",
+    distance: 0.9,
+    status: "vacant",
+    images: ["/pg-room-r4.png","/pg-room-r41.jpg"],
+    amenities: ["WiFi", "Food", "CCTV"],
+    sharingOptions: [
+      { type: "Single", rent: 7500, bedsAvailable: 2 },
+      { type: "Triple", rent: 4800, bedsAvailable: 5 },
+    ]
+  },
+
+  // ================= DURGAPUR =================
+  {
+    id: 11,
+    name: "Priti PG",
+    address: "Durgapur",
+    description: "Well maintained stay for students.",
+    college: "NSHM Knowledge Campus",
+    rating: 4.9,
+    reviews: 3,
+    ownerName: "Ritesh Kumar",
+    ownerPhone: "7033613299",
+    gender: "boys",
+    distance: 1.2,
+    status: "few",
+    images: ["/pg-room-r5.jpg","/pg-room-r51.jpg"],
+    amenities: ["WiFi", "Food","Attached Bath"],
+    sharingOptions: [
+      { type: "Single", rent: 9500, bedsAvailable: 0 },
+      { type: "Double", rent: 7500, bedsAvailable: 2 },
+    ]
+  },
+  {
+    id: 12,
+    name: "Goswami's PG",
+    address: "Madusudan Park,Fuljhore, Durgapur",
+    description: "Paying Guest Accommodation for Boys in Durgapur",
+    college: "Dr. B.C. Roy Engineering College",
+    rating: 4.8,
+    reviews: 64,
+    ownerName: "Prdip Goswami",
+    ownerPhone: "7699992220",
+    gender: "boys",
+    distance: 3.2,
+    status: "vacant",
+    images: ["/pg-room-r6.jpeg","/pg-room-r61.jpeg","/pg-room-r62.jpg","/pg-room-r63.jpg","/pg-room-r64.jpg","/pg-room-r65.jpg","/pg-room-r66.jpg","/pg-room-r67.jpg","/pg-room-r68.jpg"],
+    amenities: ["WiFi", "Food", "AC", "Security","Parking"],
+    sharingOptions: [
+      {type: "Single", rent: 8000, bedsAvailable: 2 },
+      { type: "Double", rent: 7000, bedsAvailable: 4 },
+      { type: "Triple", rent: 5500, bedsAvailable: 8 },
+    ]
+  },
+  {
+    id: 13,
+    name: "Aashirbad PG",
+    address: "Madusudan Park, Fuljhore, Durgapur",
+    description: "Safe & Comfortable Paying Guest Accommodation for Male and Female in Durgapur",
+    college: "BC Roy Engineering College",
+    rating: 4.5,
+    reviews: 41,
+    ownerName: "Sanjay Agarwal",
+    ownerPhone: "9876500013",
+    gender: "coed",
+    distance: 2.5,
+    status: "few",
+    images: ["/pg-room-r7.png","/pg-room-r71.png","/pg-room-r72.jpg","/pg-room-r73.jpg",],
+    amenities: ["WiFi", "AC", "Laundry", "Gym"],
+    sharingOptions: [
+      { type: "Double", rent: 8500, bedsAvailable: 1 },
+    ]
+  },
+  {
+    id: 14,
+    name: "Student Hostel Durgapur",
+    address: "City Centre, Durgapur",
+    description: "PG in Durgapur City Centre for Boy's & Girl's",
+    college: "NIT Durgapur",
+    rating: 4.2,
+    reviews: 29,
+    ownerName: "Alok Jha",
+    ownerPhone: "9876500014",
+    gender: "coed",
+    distance: 1.2,
+    status: "vacant",
+    images: ["/pg-room-r8.jpeg","/pg-room-r81.jpeg","/pg-room-r82.jpg","/pg-room-r83.jpg","/pg-room-r84.jpg"],
+    amenities: ["WiFi", "Food", "Attached Bath"],
+    sharingOptions: [
+      { type: "Single", rent: 6500, bedsAvailable: 3 },
+      { type: "Triple", rent: 4000, bedsAvailable: 5 },
+    ]
+  },
+  {
+    id: 15,
+    name: "Shivansh PG",
+    address: "Aam Bagar rd, Fuljhore, Durgapur",
+    description: "Quiet, leafy neighborhood. Excellent for studying.",
+    college: "BC Roy Engineering College",
+    rating: 4.6,
+    reviews: 33,
+    ownerName: "Rina Dasgupta",
+    ownerPhone: "9876500015",
+    gender: "girls",
+    distance: 1.8,
+    status: "full",
+    images: ["/pg-room-r9.webp","/pg-room-r91.webp","/pg-room-r92.webp"],
+    amenities: ["WiFi", "Food", "Attached Bath"],
+    sharingOptions: [
+      { type: "Double", rent: 6800, bedsAvailable: 0 },
+    ]
+  },
+  {
+    id: 16,
+    name: "2ND HOME HOSTEL",
+    address: "City Centre, Durgapur",
+    description: "PG in Durgapur | Accomodation for Boys & Girls",
+    college: "NIT Durgapur",
+    rating: 3.8,
+    reviews: 15,
+    ownerName: "Tapan Mondal",
+    ownerPhone: "9876500016",
+    gender: "coed",
+    distance: 2.4,
+    status: "vacant",
+    images: ["/pg-room-r10.webp","/pg-room-r101.webp","/pg-room-r102.webp","/pg-room-r103.webp"],
+    amenities: ["WiFi", "Food", "Attached Bath"],
+    sharingOptions: [
+      { type: "Double", rent: 5000, bedsAvailable: 6 },
+      { type: "Triple", rent: 3800, bedsAvailable: 4 },
+    ]
+  },
 ];
