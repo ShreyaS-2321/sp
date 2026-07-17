@@ -65,33 +65,51 @@ export default function ExplorePGs() {
     }
   };
 
+  // Helper to format gender text nicely on the cards
+  const formatGenderBadge = (gender) => {
+    const g = (gender || "").toLowerCase().replace("-", "");
+    if (g === "coed") return "Co-ed";
+    if (g === "boys") return "Boys Only";
+    if (g === "girls") return "Girls Only";
+    return gender;
+  };
+
   // Filter + Sort logic
   const filteredPGs = useMemo(() => {
     let data = [...pgListings];
 
+    // 1. SEARCH FILTER (Now also safely searches by gender)
     if (searchTerm.trim() !== "") {
-      const term = searchTerm.toLowerCase();
+      const term = searchTerm.toLowerCase().replace("-", ""); // handles "co-ed" vs "coed"
       data = data.filter(
         (pg) =>
-          pg.name.toLowerCase().includes(term) ||
+          (pg.name && pg.name.toLowerCase().includes(term)) ||
           (pg.college && pg.college.toLowerCase().includes(term)) ||
-          pg.address.toLowerCase().includes(term)
+          (pg.address && pg.address.toLowerCase().includes(term)) ||
+          (pg.gender && pg.gender.toLowerCase().replace("-", "").includes(term))
       );
     }
 
+    // 2. MAIN FILTERS
     data = data.filter((pg) => {
+      // Safe Rent Calculation
       const pgRent = pg.rent || (pg.sharingOptions && pg.sharingOptions.length > 0 
-        ? Math.min(...pg.sharingOptions.map(o => o.rent)) 
+        ? Math.min(...pg.sharingOptions.map(o => Number(o.rent) || 0)) 
         : 0);
 
+      // Safe Gender Check (ignores hyphens and cases)
+      const normalizedPgGender = (pg.gender || "").toLowerCase().replace("-", "").trim();
+      const normalizedFilterGender = filters.gender.toLowerCase().replace("-", "").trim();
+      
       const matchesRent = pgRent >= filters.rentMin && pgRent <= filters.rentMax;
-      const matchesGender = filters.gender === "all" || pg.gender === filters.gender;
-      const matchesDistance = pg.distance <= filters.distance;
+      const matchesGender = filters.gender === "all" || normalizedPgGender === normalizedFilterGender;
+      const matchesDistance = (pg.distance || 0) <= filters.distance;
       const matchesVacancy = !filters.vacancy || pg.status === "vacant" || pg.status === "few";
 
       return matchesRent && matchesGender && matchesDistance && matchesVacancy;
     });
 
+    // 3. SORTING
     switch (sortBy) {
       case "Rent (Low→High)":
         data.sort((a, b) => {
@@ -108,7 +126,7 @@ export default function ExplorePGs() {
         });
         break;
       case "Distance":
-        data.sort((a, b) => a.distance - b.distance);
+        data.sort((a, b) => (a.distance || 0) - (b.distance || 0));
         break;
       case "Newest":
         data.sort((a, b) => b.id - a.id);
@@ -144,7 +162,7 @@ export default function ExplorePGs() {
               <Search size={18} style={{ color: GREEN }} className="shrink-0" />
               <input
                 type="text"
-                placeholder="Search PG by college, name or landmark..."
+                placeholder="Search by college, location, or type (e.g. 'Co-ed', 'Boys')..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-transparent outline-none py-3 text-sm md:text-base"
@@ -180,7 +198,7 @@ export default function ExplorePGs() {
               </label>
               <input
                 type="range"
-                min="4000"
+                min="3000"
                 max="20000"
                 step="500"
                 value={filters.rentMax}
@@ -283,7 +301,7 @@ export default function ExplorePGs() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredPGs.map((pg) => {
               const startingRent = pg.rent || (pg.sharingOptions && pg.sharingOptions.length > 0 
-                ? Math.min(...pg.sharingOptions.map(o => o.rent)) 
+                ? Math.min(...pg.sharingOptions.map(o => Number(o.rent) || 0)) 
                 : 0);
 
               return (
@@ -296,8 +314,9 @@ export default function ExplorePGs() {
                       onError={(e) => { e.target.style.display = 'none'; }}
                     />
                     <div className="absolute top-4 left-4">
+                      {/* Using the new formatter function for gender */}
                       <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm ff-mono text-[0.6rem] uppercase tracking-[0.1em]">
-                        {pg.gender}
+                        {formatGenderBadge(pg.gender)}
                       </span>
                     </div>
                   </div>
